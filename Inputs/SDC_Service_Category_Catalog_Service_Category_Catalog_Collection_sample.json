@@ -1,0 +1,24 @@
+{
+	"connection_key": "response",
+	"result": true,
+	"redis_key": "abcdefg",
+	"filepath": "/var/lib/aion/Data/rededge_sdc/abcdef.json",
+	"ServiceCategoryCatalogCollection": {
+		"ObjectID":"",                                    
+		"ETag":"",                                        
+		"ID":"SCC_1",                                          
+		"VersionID":"",                                   
+		"LifeCycleStatusCode":"",                         
+		"LifeCycleStatusCodeText":"",                     
+		"EndDateTime":"",                                 
+		"StartDateTime":"",                               
+		"ServiceCategoryCatalogueName":"",                
+		"ServiceCategoryCatalogueNamelanguageCode":"",    
+		"ServiceCategoryCatalogueNamelanguageCodeText":"",
+		"EntityLastChangedOn":""                              
+	},
+	"api_schema": "ServiceCategoryCatalog",
+	"accepter": ["ServiceCategoryCatalogCollection"],
+	"service_category_catalog_code": "SCC_1",
+	"deleted": false
+}
