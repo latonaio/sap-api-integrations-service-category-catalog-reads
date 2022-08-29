@@ -26,14 +26,14 @@ func NewSAPAPICaller(baseUrl string, l *logger.Logger) *SAPAPICaller {
 	}
 }
 
-func (c *SAPAPICaller) AsyncGetServiceCategoryCatalog(iD string, accepter []string) {
+func (c *SAPAPICaller) AsyncGetServiceCategoryCatalog(iD, versionID string, accepter []string) {
 	wg := &sync.WaitGroup{}
 	wg.Add(len(accepter))
 	for _, fn := range accepter {
 		switch fn {
 		case "ServiceCategoryCatalogCollection":
 			func() {
-				c.ServiceCategoryCatalogCollection(iD)
+				c.ServiceCategoryCatalogCollection(iD, versionID)
 				wg.Done()
 			}()
 		default:
@@ -44,8 +44,8 @@ func (c *SAPAPICaller) AsyncGetServiceCategoryCatalog(iD string, accepter []stri
 	wg.Wait()
 }
 
-func (c *SAPAPICaller) ServiceCategoryCatalogCollection(iD string) {
-	data, err := c.callServiceCategoryCatalogSrvAPIRequirementServiceCategoryCatalogCollection("ServiceCategoryCatalogueCollection", iD)
+func (c *SAPAPICaller) ServiceCategoryCatalogCollection(iD, versionID string) {
+	data, err := c.callServiceCategoryCatalogSrvAPIRequirementServiceCategoryCatalogCollection("ServiceCategoryCatalogueCollection", iD, versionID)
 	if err != nil {
 		c.log.Error(err)
 		return
@@ -54,12 +54,12 @@ func (c *SAPAPICaller) ServiceCategoryCatalogCollection(iD string) {
 
 }
 
-func (c *SAPAPICaller) callServiceCategoryCatalogSrvAPIRequirementServiceCategoryCatalogCollection(api, iD string) ([]sap_api_output_formatter.ServiceCategoryCatalogCollection, error) {
+func (c *SAPAPICaller) callServiceCategoryCatalogSrvAPIRequirementServiceCategoryCatalogCollection(api, iD, versionID string) ([]sap_api_output_formatter.ServiceCategoryCatalogCollection, error) {
 	url := strings.Join([]string{c.baseURL, "c4codataapi", api}, "/")
 	req, _ := http.NewRequest("GET", url, nil)
 
 	c.setHeaderAPIKeyAccept(req)
-	c.getQueryWithServiceCategoryCatalogCollection(req, iD)
+	c.getQueryWithServiceCategoryCatalogCollection(req, iD, versionID)
 
 	resp, err := new(http.Client).Do(req)
 	if err != nil {
@@ -80,8 +80,8 @@ func (c *SAPAPICaller) setHeaderAPIKeyAccept(req *http.Request) {
 	req.Header.Set("Accept", "application/json")
 }
 
-func (c *SAPAPICaller) getQueryWithServiceCategoryCatalogCollection(req *http.Request, iD string) {
+func (c *SAPAPICaller) getQueryWithServiceCategoryCatalogCollection(req *http.Request, iD, versionID string) {
 	params := req.URL.Query()
-	params.Add("$filter", fmt.Sprintf("ID eq '%s'", iD))
+	params.Add("$filter", fmt.Sprintf("ID eq '%s' and VersionID eq '%s'", iD, versionID))
 	req.URL.RawQuery = params.Encode()
 }

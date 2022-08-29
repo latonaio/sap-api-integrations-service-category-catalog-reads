@@ -24,6 +24,7 @@ func main() {
 
 	caller.AsyncGetServiceCategoryCatalog(
 		inoutSDC.ServiceCategoryCatalogCollection.ID,
+		inoutSDC.ServiceCategoryCatalogCollection.VersionID,
 		accepter,
 	)
 }
